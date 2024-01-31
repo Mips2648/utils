@@ -33,12 +33,11 @@ jobs:
           version=`echo ${version:1}`
           echo $version
 
-
-      # - name: "commit change"
-      #   run: |
-      #     cd $GITHUB_WORKSPACE
-      #     git config user.name github-actions
-      #     git config user.email github-actions@github.com
-      #     git add ip
-      #     git commit -m 'update list'
-      #     git push
+      - name: "commit change"
+        run: |
+          cd $GITHUB_WORKSPACE
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          echo $version $GITHUB_WORKSPACE/tgw_version
+          git commit -m 'update tgw version'
+          git push
