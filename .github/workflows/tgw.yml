@@ -29,8 +29,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           response=$(curl --request GET --url "https://api.github.com/repos/theengs/gateway/releases/latest" --header "Accept: application/vnd.github+json" --header "X-GitHub-Api-Version: 2022-11-28" --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}')
+          jq '.tag_name' response
 
-          echo $response
+
       # - name: "commit change"
       #   run: |
       #     cd $GITHUB_WORKSPACE
