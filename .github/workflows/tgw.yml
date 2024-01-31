@@ -41,6 +41,5 @@ jobs:
           git config user.email github-actions@github.com
           echo "file content:"
           cat $GITHUB_WORKSPACE/tgw_version
-          git add tgw_version
-          git commit -m 'update tgw version'
+          git diff --quiet || (git add tgw_version && git commit -m 'update tgw version')
           git push
