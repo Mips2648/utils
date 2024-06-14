@@ -27,10 +27,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           response=$(curl --request GET --url "https://api.github.com/repos/theengs/gateway/releases/latest" --header "Accept: application/vnd.github+json" --header "X-GitHub-Api-Version: 2022-11-28" --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}')
-          version=$( jq -r  '.tag_name' <<< "${response}" )
-          version=`echo ${version:1}`
-          echo "last version is $version"
-          echo $version > $GITHUB_WORKSPACE/tgw_version
+          version_gateway=$( jq -r  '.tag_name' <<< "${response}" )
+          version_gateway=`echo ${version_gateway:1}`
+          echo "last version is $version_gateway"
+          echo $version_gateway > $GITHUB_WORKSPACE/theengs_gateway_version
+
+          response=$(curl --request GET --url "https://api.github.com/repos/theengs/gateway/releases/latest" --header "Accept: application/vnd.github+json" --header "X-GitHub-Api-Version: 2022-11-28" --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}')
+          version_decoder=$( jq -r  '.tag_name' <<< "${response}" )
+          version_decoder=`echo ${version_decoder:1}`
+          echo "last version is $version_decoder"
+          echo $version_decoder > $GITHUB_WORKSPACE/theengs_decoder_version
 
       - name: "commit change"
         run: |
@@ -39,5 +45,5 @@ jobs:
           git config user.email github-actions@github.com
           echo "file content:"
           cat $GITHUB_WORKSPACE/tgw_version
-          git diff --quiet || (git add tgw_version && git commit -m 'update tgw version')
+          git diff --quiet || (git add theengs_gateway_version theengs_decoder_version && git commit -m 'update tgw version')
           git push
