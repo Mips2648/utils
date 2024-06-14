@@ -32,7 +32,7 @@ jobs:
           echo "last version is $version_gateway"
           echo $version_gateway > $GITHUB_WORKSPACE/theengs_gateway_version
 
-          response=$(curl --request GET --url "https://api.github.com/repos/theengs/gateway/releases/latest" --header "Accept: application/vnd.github+json" --header "X-GitHub-Api-Version: 2022-11-28" --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}')
+          response=$(curl --request GET --url "https://api.github.com/repos/theengs/decoder/releases/latest" --header "Accept: application/vnd.github+json" --header "X-GitHub-Api-Version: 2022-11-28" --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}')
           version_decoder=$( jq -r  '.tag_name' <<< "${response}" )
           version_decoder=`echo ${version_decoder:1}`
           echo "last version is $version_decoder"
@@ -43,7 +43,8 @@ jobs:
           cd $GITHUB_WORKSPACE
           git config user.name github-actions
           git config user.email github-actions@github.com
-          echo "file content:"
-          cat $GITHUB_WORKSPACE/tgw_version
+          echo "files content:"
+          cat $GITHUB_WORKSPACE/theengs_gateway_version
+          cat $GITHUB_WORKSPACE/theengs_decoder_version
           git diff --quiet || (git add theengs_gateway_version theengs_decoder_version && git commit -m 'update tgw version')
           git push
